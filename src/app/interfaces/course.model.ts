@@ -6,4 +6,5 @@ export interface ICourseModel {
   longDescription: string;
   category: string;
   lessonsCount: number;
+  realisedAt: string;
 }
