@@ -12,6 +12,11 @@ export const routes: Routes = [
       import('./pages/about/about.component').then((m) => m.AboutComponent)
   },
   {
+    path: 'course/:id',
+    loadComponent: () =>
+      import('./pages/course/course.component').then((m) => m.CourseComponent)
+  },
+  {
     path: '**',
     redirectTo: '/'
   }

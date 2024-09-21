@@ -5,7 +5,7 @@ export function createHttpObservable(url: string): Observable<any> {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    fetch(url, { signal })
+    fetch(`http://localhost:9000/api/${url}`, { signal })
       .then((response) => response.json())
       .then((body) => {
         observer.next(body);

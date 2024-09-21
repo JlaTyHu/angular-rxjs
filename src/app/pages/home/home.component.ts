@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   advancedCourses$!: Observable<ICourseModel[]>;
 
   ngOnInit(): void {
-    const http$ = createHttpObservable('http://localhost:9000/api/courses');
+    const http$ = createHttpObservable('courses');
 
     const courses$: Observable<ICourseModel[]> = http$.pipe(
       map((response) => response.payload),
