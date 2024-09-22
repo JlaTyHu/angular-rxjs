@@ -14,6 +14,7 @@ import {
   fromEvent,
   map,
   Observable,
+  startWith,
   switchMap
 } from 'rxjs';
 import { ICourseModel } from '../../interfaces/course.model';
@@ -77,17 +78,14 @@ export class CourseComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const searchLessons$ = fromEvent(this.input.nativeElement, 'keyup').pipe(
+    this.lessons$ = fromEvent(this.input.nativeElement, 'keyup').pipe(
       map((event) => event.target as HTMLInputElement),
       map((element) => element.value),
+      startWith(''),
       debounceTime(400),
       distinctUntilChanged(),
       switchMap((search) => this.loadLessons(search))
     );
-
-    const initialLessons$ = this.loadLessons();
-
-    this.lessons$ = concat(initialLessons$, searchLessons$);
   }
 
   protected loadLessons(search = ''): Observable<ILessonModel[]> {
