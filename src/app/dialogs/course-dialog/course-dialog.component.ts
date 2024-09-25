@@ -26,6 +26,7 @@ import { MatButton } from '@angular/material/button';
 import { ICourseModel } from '../../interfaces/course.model';
 import { exhaustMap, filter, fromEvent, mergeMap, Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-course-dialog',
@@ -53,6 +54,7 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 export class CourseDialogComponent implements OnInit, AfterViewInit {
   readonly #formBuilder = inject(FormBuilder);
   readonly dialogData: ICourseModel = inject(MAT_DIALOG_DATA);
+  readonly #storeService = inject(StoreService);
 
   @ViewChild('saveButton', {
     static: true,
@@ -89,7 +91,13 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  onSave(): void {}
+  onSave(): void {
+    this.#storeService.saveCourse(this.dialogData.id, this.courseForm.value as Partial<ICourseModel>)
+      .subscribe({
+        next: () => this.onClose(),
+        error: (error) => console.log('@@ Error occurred: ', error)
+      });
+  }
 
   onClose(): void {}
 

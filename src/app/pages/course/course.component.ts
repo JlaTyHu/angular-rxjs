@@ -8,9 +8,9 @@ import {
   ViewChild
 } from '@angular/core';
 import {
-  concat,
   debounceTime,
   distinctUntilChanged,
+  first,
   fromEvent,
   map,
   Observable,
@@ -36,6 +36,7 @@ import {
   MatRowDef,
   MatTable
 } from '@angular/material/table';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-course',
@@ -62,19 +63,22 @@ import {
 })
 export class CourseComponent implements OnInit, AfterViewInit {
   readonly #route = inject(ActivatedRoute);
+  readonly #storeService = inject(StoreService);
 
   course$!: Observable<ICourseModel>;
   lessons$!: Observable<ILessonModel[]>;
 
   readonly displayedColumns = ['seqNo', 'description', 'duration'];
-  courseId!: string;
+  courseId!: number;
 
   @ViewChild('searchInput') input!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
     this.courseId = this.#route.snapshot.params['id'];
 
-    this.course$ = createHttpObservable(`courses/${this.courseId}`);
+    this.course$ = this.#storeService
+      .selectCourseById(this.courseId)
+      .pipe(first());
   }
 
   ngAfterViewInit(): void {

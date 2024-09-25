@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { concat, interval, map, merge, of } from 'rxjs';
 
 @Component({
@@ -6,7 +6,8 @@ import { concat, interval, map, merge, of } from 'rxjs';
   standalone: true,
   imports: [],
   templateUrl: './about.component.html',
-  styleUrl: './about.component.scss'
+  styleUrl: './about.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AboutComponent implements OnInit {
   ngOnInit() {
